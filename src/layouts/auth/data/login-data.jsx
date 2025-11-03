@@ -22,9 +22,9 @@ const LoginData = () => {
                 username: username,
                 password: password,
             };
-            const { data } = await apiLogin(params);
+            const { data } = await apiLogin(JSON.stringify(params));
             if (data.status === "success") {
-                localStorage.setItem("token", data.data.token);
+                // localStorage.setItem("token", data.data.token);
                 dispatch({ type: "LOGIN", payload: data.data });
                 Cookies.set("loginUser", JSON.stringify(data.data));
                 setLoading(false);

@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addBreadcrumbs } from "../../reducers/userReducer";
 import Cookies from "js-cookie";
 import { showNotification } from "../../helper/showNotification";
+import { apiLogout } from "../../services/api";
 
 const NavigationSection = ({ opened, toggle }) => {
     const navigate = useNavigate();
@@ -29,31 +30,33 @@ const NavigationSection = ({ opened, toggle }) => {
     const activeLink = breadcrumbState.activeLink || location.pathname;
     const [openedLinks, setOpenedLinks] = useState({});
 
-    function handleLogout() {
+    async function handleLogout() {
         try {
-            Cookies.remove("loginUser");
-            Cookies.remove("ADD_BREADCRUMBS");
-            localStorage.removeItem("token");
+            const { data } = await apiLogout();
+            if (data.status === "success") {
+                Cookies.remove("loginUser");
+                Cookies.remove("ADD_BREADCRUMBS");
+                localStorage.removeItem("token");
 
-            dispatch({
-                type: "LOGOUT",
-            });
+                dispatch({
+                    type: "LOGOUT",
+                });
 
-            dispatch({
-                type: "RESET_BREADCRUMBS",
-            });
+                dispatch({
+                    type: "RESET_BREADCRUMBS",
+                });
 
-            showNotification({
-                title: "Logout Success",
-                message: "You have been logged out successfully",
-                color: "blue",
-            });
-
+                showNotification({
+                    title: "Logout Success",
+                    message: "You have been logged out successfully",
+                    color: "blue",
+                });
+            }
             navigate("/auth/login");
         } catch (e) {
             showNotification({
                 title: "Logout Failed",
-                message: "Something went wrong",
+                message: "Something went wrong : " + e,
                 color: "red",
             });
         }
