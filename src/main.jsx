@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import "@mantine/core/styles.css";
+import "mantine-datatable/styles.layer.css";
 import { MantineProvider } from "@mantine/core";
 import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -11,6 +12,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
+import "../layout.css";
 
 const store = createStore(rootReducer, composeWithDevTools());
 
